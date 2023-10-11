@@ -1,4 +1,4 @@
-import { userController } from '@app/controllers/user.controller'
+import { userController } from './user.controller'
 
 export {
   userController

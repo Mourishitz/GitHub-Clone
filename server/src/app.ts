@@ -1,5 +1,5 @@
 import express, { type Express } from 'express'
-import { userController } from '@app/controllers'
+import { userController } from './controllers'
 
 const api: Express = express()
 const port: number = 3000

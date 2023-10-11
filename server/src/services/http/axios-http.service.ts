@@ -1,6 +1,6 @@
 import axios, { Axios, type AxiosRequestConfig, type AxiosResponse } from 'axios';
-import type { IHttpClient } from '@app/services/http/interfaces/http-client.interface';
-import { HttpServiceException } from '@app/services/http/exceptions/HttpServiceException'
+import type { IHttpClient } from './interfaces/http-client.interface';
+import { HttpServiceException } from './exceptions/HttpServiceException'
 
 export class AxiosHttpService implements IHttpClient {
     private http: Axios;
