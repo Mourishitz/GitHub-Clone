@@ -1,17 +1,16 @@
 import { useState } from "react";
-import UserResource from "../../resources/user.resource";
 import GitHubCloneService from "../../services/github-clone.service";
 import { GetUsersResponse } from "../../resources/get-users.resource";
-import { Link } from "react-router-dom";
 
 type TableProps = {
   collumns: Array<string>
   data: Array<any>
   next: string | undefined
   previous: string | undefined
+  body: any
 }
 
-export default function TableComponent({data, collumns, next, previous}: TableProps){
+export default function TableComponent({data, collumns, next, previous, body}: TableProps){
   const [table, setTable] = useState(data);
   const [searchQuery, setSearchQuery] = useState("");
   const [page, setPage] = useState<number>(1);
@@ -19,9 +18,11 @@ export default function TableComponent({data, collumns, next, previous}: TablePr
   const [previousUrl, setPreviousUrl] = useState(previous);
 
 
-  const filteredData = table ? table.filter((user: UserResource) =>
-    user.id.toString().toLowerCase().includes(searchQuery.toLowerCase()) ||
-    user.login.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredData = table ? table.filter((content: Record<string, any>) => {
+      return Object.values(content).some((value) =>
+        String(value).toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
   ) : [];
 
   const nextPage = async () => {
@@ -81,15 +82,7 @@ export default function TableComponent({data, collumns, next, previous}: TablePr
             {
               table 
               ?
-                filteredData.map((user: UserResource, index: number)=>{
-                  return (
-                    <tr key={index}>
-                      <td>{user.id}</td>
-                      <td>{user.login}</td>
-                      <Link className="btn btn-link" to={`/user/${user.login}`}>User</Link>
-                    </tr>
-                  )
-                })
+                filteredData.map(body)
               : 
                 <>Loading...</>
             }
