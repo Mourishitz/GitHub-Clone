@@ -1,10 +1,14 @@
 import express, { type Express } from 'express'
 import { userController } from './controllers'
 import * as dotenv from "dotenv";
+import cors from 'cors';
+
 dotenv.config({ path: __dirname+'/.env' });
 
 const api: Express = express()
 const port: number = 3000
+
+api.use(cors())
 
 api.use('/api/users', userController)
 

@@ -1,3 +1,4 @@
+import UserDetails from 'src/resources/user-details.resource';
 import RepositoryResource from '../resources/repository.resource';
 import type UserResource from '../resources/user.resource'
 import { AxiosHttpService } from './http/axios-http.service'
@@ -31,10 +32,10 @@ class GitHubService extends AxiosHttpService {
    * Get a User object by username.
    * 
    * @param username 
-   * @returns Promise<UserResource>
+   * @returns Promise<UserDetails>
    * @throws HttpServiceException
    */
-  public async getUser(username: string): Promise<UserResource>{
+  public async getUser(username: string): Promise<UserDetails>{
     try {
       const response = await this.get(`/users/${username}`, {
         headers: {
@@ -47,7 +48,7 @@ class GitHubService extends AxiosHttpService {
         throw new HttpServiceException('User not found.');
       } 
 
-      return response.data as UserResource;
+      return response.data as UserDetails;
     } catch (error) {
       console.error(error);
     }
@@ -65,7 +66,7 @@ class GitHubService extends AxiosHttpService {
    */
   public async getRepositoriesForUser(username: string, amount: number = 5, page: number = 1): Promise<RepositoryResource[]> {
     try {
-      const user: UserResource = await this.getUser(username);
+      const user: UserDetails = await this.getUser(username);
 
       if(!user){
         throw new HttpServiceException('User not found');
