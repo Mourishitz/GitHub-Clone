@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react"
 import GitHubCloneService from "../../services/github-clone.service"
 import TableComponent from "../../components/TableComponent"
-import UserResource from "../../resources/user.resource"
-
+import type { GetUsersResponse } from "../../resources/get-users.resource"
 
 export default function Home() {
-  const [users, setUsers] = useState<UserResource[]>([])
+  const [users, setUsers] = useState<GetUsersResponse>()
+  const [loader, setLoader] = useState(true);
 
   useEffect(()=>{
       getUsers()
@@ -14,13 +14,25 @@ export default function Home() {
 
   const getUsers = async (): Promise<void> => {
     const response = await GitHubCloneService.getUsers(1, 10);
-    setUsers(response.data);
+    setUsers(response);
+    setLoader(false)
   }
 
   return (
     <div className="mt-8">
       <div className="flex justify-center">
-        <TableComponent collumns={['ID', 'Login']} data={users}/>
+        { !users 
+            ? 
+              loader
+                ?
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <span className="loading loading-dots loading-lg"></span>
+                  </div>
+                :
+                  <>Resource not found</>
+            :
+              <TableComponent collumns={['ID', 'Login', 'Profile']} data={users.data} next={users.next} previous={users.previous}/>
+        }
       </div>
     </div>
   )
