@@ -19,7 +19,8 @@ class GitHubService extends AxiosHttpService {
   public async getUsers(since?: number, limit: number = 10): Promise<UserResource[]>{
     const response = await this.get(`/users?since=${since}&per_page=${limit}`, {
       headers: {
-        Accept: 'application/vnd.github+json'
+        Accept: 'application/vnd.github+json',
+        Authorization: `Bearer ${process.env.GITHUB_TOKEN}`
       }
     });
 
@@ -37,7 +38,8 @@ class GitHubService extends AxiosHttpService {
     try {
       const response = await this.get(`/users/${username}`, {
         headers: {
-          Accept: 'application/vnd.github+json'
+          Accept: 'application/vnd.github+json',
+          Authorization: `Bearer ${process.env.GITHUB_TOKEN}`
         }
       });
 
@@ -61,7 +63,7 @@ class GitHubService extends AxiosHttpService {
    * @returns Promise<RepositoryResource[]>
    * @throws HttpServiceException
    */
-  public async getRepositoriesForUser(username: string, amount: number = 5): Promise<RepositoryResource[]> {
+  public async getRepositoriesForUser(username: string, amount: number = 5, page: number = 1): Promise<RepositoryResource[]> {
     try {
       const user: UserResource = await this.getUser(username);
 
@@ -69,7 +71,11 @@ class GitHubService extends AxiosHttpService {
         throw new HttpServiceException('User not found');
       }
 
-      const repository = await this.get(`/users/${username}/repos?per_page=${amount}`);
+      const repository = await this.get(`/users/${username}/repos?per_page=${amount}&page=${page}`, {
+        headers: {
+          Authorization: `Bearer ${process.env.GITHUB_TOKEN}`
+        }
+      });
 
       return repository.data as RepositoryResource[]
 

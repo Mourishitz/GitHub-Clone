@@ -34,6 +34,8 @@ userController.get('/:username/details', async(request: Request, response: Respo
 
 userController.get('/:username/repos', async(request: Request, response: Response) => {
   const user: UserResource = await GitHubService.getUser(request.params['username']);
+  const amount: number = +(request.query['amount'])
+  const page: number = +(request.query['page'] ?? 1)
 
   if(!user){
     response.status(404);
@@ -43,10 +45,11 @@ userController.get('/:username/repos', async(request: Request, response: Respons
     return;
   }
 
-  const repositories: RepositoryResource[] = await GitHubService.getRepositoriesForUser(user.login, +request.query['amount']);
+  const repositories: RepositoryResource[] = await GitHubService.getRepositoriesForUser(user.login, amount, page);
 
   response.json({
-    'data': repositories
+    'data': repositories,
+    'next': `${process.env.BASE_URL}/api/users/${user.login}/repos?amount=${amount}&page=${page + 1}`
   })
 })
 
