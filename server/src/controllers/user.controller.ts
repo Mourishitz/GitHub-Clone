@@ -7,13 +7,13 @@ import UserDetails from 'src/resources/user-details.resource'
 const userController: Router = express.Router()
 
 userController.get('/', async (request: Request, response: Response) => {
-  const [since, limit] = [request.query['since'], request.query['limit']];
+  const [since, limit] = [+(request.query['since']), +(request.query['limit'])];
 
-  const users: UserResource[] = await GitHubService.getUsers(+since, +limit);
+  const users: UserResource[] = await GitHubService.getUsers(since, limit);
 
-  const next = `${process.env.BASE_URL}/api/users/?since=${users.at(-1).id}&limit=${limit}`
+  const next = `${process.env.BASE_URL}/api/users/?since=${since + limit}&limit=${limit}`
 
-  const previous = `${process.env.BASE_URL}/api/users/?since=${(users.at(0).id - (+limit)) - 1}&limit=${limit}`
+  const previous = (since - limit > 0) ? `${process.env.BASE_URL}/api/users/?since=${since - limit}&limit=${limit}` : null
 
   response.json({
     'data': users,
