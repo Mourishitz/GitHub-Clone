@@ -51,7 +51,17 @@ class GitHubService extends AxiosHttpService {
     }
   }
 
-  public async getRepositoriesForUser(username: string): Promise<RepositoryResource[]> {
+
+  /**
+   * Get a list of user's repositories. 
+   * The amount of repositories returned may be controlled by the amount parameter.
+   * 
+   * @param username 
+   * @param amount 
+   * @returns Promise<RepositoryResource[]>
+   * @throws HttpServiceException
+   */
+  public async getRepositoriesForUser(username: string, amount: number = 5): Promise<RepositoryResource[]> {
     try {
       const user: UserResource = await this.getUser(username);
 
@@ -59,7 +69,7 @@ class GitHubService extends AxiosHttpService {
         throw new HttpServiceException('User not found');
       }
 
-      const repository = await this.get(`/users/${username}/repos`);
+      const repository = await this.get(`/users/${username}/repos?per_page=${amount}`);
 
       return repository.data as RepositoryResource[]
 

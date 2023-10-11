@@ -11,7 +11,8 @@ userController.get('/', async (request: Request, response: Response) => {
   const users: UserResource[] = await GitHubService.getUsers(+since, +limit);
 
   response.json({
-    'data': users
+    'data': users,
+    'next': `${process.env.BASE_URL}/api/users/?since=${users.at(-1).id}&limit=${limit}`
   })
 })
 
@@ -42,7 +43,7 @@ userController.get('/:username/repos', async(request: Request, response: Respons
     return;
   }
 
-  const repositories: RepositoryResource[] = await GitHubService.getRepositoriesForUser(user.login);
+  const repositories: RepositoryResource[] = await GitHubService.getRepositoriesForUser(user.login, +request.query['amount']);
 
   response.json({
     'data': repositories

@@ -1,5 +1,7 @@
 import express, { type Express } from 'express'
 import { userController } from './controllers'
+import * as dotenv from "dotenv";
+dotenv.config({ path: __dirname+'/.env' });
 
 const api: Express = express()
 const port: number = 3000
