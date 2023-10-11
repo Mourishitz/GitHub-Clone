@@ -1,27 +1,15 @@
-# React + TypeScript + Vite
+# GitHub-Clone (Client Side)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Architecture Overview
 
-Currently, two official plugins are available:
+We aimed for a simple ad reliable frontend build for our application purposes using React + Vite. We are including packages like Tailwind CSS and DaisyUI in order to help us on boilerplating and more simple yet very beautiful components.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+As the client and server side are "attached" we were able to reuse some resources or classes like the HTTP client configuration and response types, but we should be able to implement this frontend on other services easily due to it's highly adaptable way of being built.
 
-## Expanding the ESLint configuration
+Our project architecture is a simple and functional approach for raw React applications. Our React Virtual DOM is created on main.tsx and the application itself runs on App.tsx where it calls our Router (inside src/routes) so we can route multiple pages while still using a Single Page Application. It is running react-router-dom library.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Inside Router component we can easily configure function-based pages for our application by passing its JSX fragment inside the element key and the respective path for it.
 
-- Configure the top-level `parserOptions` property like this:
+The pages can be found inside the src/pages directory where each subdirectory contains an index.tsx for exporting the representation of that page as an JSX component.
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
-```
-
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Speaking of components, we provide generic components inside src/components directory so they can be reused on more than one place and still work just as fine.
