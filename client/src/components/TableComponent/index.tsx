@@ -7,7 +7,7 @@ type TableProps = {
   data: Array<any>
   next: string | undefined
   previous: string | undefined
-  body: any
+  body: any // Serves as callback for map function
 }
 
 export default function TableComponent({data, collumns, next, previous, body}: TableProps){

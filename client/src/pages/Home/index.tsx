@@ -2,6 +2,8 @@ import { useState, useEffect } from "react"
 import GitHubCloneService from "../../services/github-clone.service"
 import TableComponent from "../../components/TableComponent"
 import type { GetUsersResponse } from "../../resources/get-users.resource"
+import { Link } from "react-router-dom"
+import UserResource from "../../resources/user.resource"
 
 export default function Home() {
   const [users, setUsers] = useState<GetUsersResponse>()
@@ -31,7 +33,21 @@ export default function Home() {
                 :
                   <>Resource not found</>
             :
-              <TableComponent collumns={['ID', 'Login', 'Profile']} data={users.data} next={users.next} previous={users.previous}/>
+              <TableComponent 
+                collumns={['ID', 'Login', 'Profile']} 
+                data={users.data} 
+                next={users.next} 
+                previous={users.previous}
+                body={(user: UserResource, index: number)=>{
+                  return (
+                    <tr key={index}>
+                      <td>{user.id}</td>
+                      <td>{user.login}</td>
+                      <Link className="btn btn-link" to={`/user/${user.login}`}>User</Link>
+                    </tr>
+                  )
+                }}
+              />
         }
       </div>
     </div>
