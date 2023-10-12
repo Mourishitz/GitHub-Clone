@@ -30,4 +30,4 @@ class GitHubCloneService extends AxiosHttpService {
   }
 };
 
-export default new GitHubCloneService('http://localhost:3000/api')
+export default new GitHubCloneService('https://github-clone-u9t6.onrender.com/api')
