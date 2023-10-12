@@ -15,7 +15,7 @@ export default function Home() {
   )
 
   const getUsers = async (): Promise<void> => {
-    const response = await GitHubCloneService.getUsers(1, 10);
+    const response = await GitHubCloneService.getUsers(0, 10);
     setUsers(response);
     setLoader(false)
   }

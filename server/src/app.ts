@@ -3,7 +3,7 @@ import { userController } from './controllers'
 import * as dotenv from "dotenv";
 import cors from 'cors';
 
-dotenv.config({ path: __dirname+'/.env' });
+dotenv.config();
 
 const api: Express = express()
 const port: number = 3000
